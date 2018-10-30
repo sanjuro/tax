@@ -114,6 +114,15 @@ final class County
     }
 
     /**
+     * @param State $state
+     * @return void
+     */
+    public function setState(State $state): void
+    {
+        $this->state = $state;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getCreatedAt(): \DateTime

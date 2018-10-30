@@ -135,6 +135,15 @@ class State
     }
 
     /**
+     * @param Country $country
+     * @return void
+     */
+    public function setCountry(Country $country): void
+    {
+        $this->country = $country;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getCreatedAt(): \DateTime

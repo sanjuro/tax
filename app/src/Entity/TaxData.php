@@ -28,6 +28,12 @@ final class TaxData
 
     /**
      * @var decimal
+     * @ORM\Column(name="average_total_amount", type="decimal", precision=20, scale=2)
+     */
+    private $average_total_amount;
+
+    /**
+     * @var decimal
      * @ORM\Column(name="average_rate", type="decimal", precision=4, scale=2)
      */
     private $average_rate;
@@ -103,6 +109,23 @@ final class TaxData
     public function setTotalAmount(float $total_amount): void
     {
         $this->total_amount = $total_amount;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAverageTotalAmount(): float
+    {
+        return $this->average_total_amount;
+    }
+
+    /**
+     * @param float $average_total_amount
+     * @return void
+     */
+    public function setAverageTotalAmount(float $average_total_amount): void
+    {
+        $this->average_total_amount = $average_total_amount;
     }
 
     /**

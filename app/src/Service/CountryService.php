@@ -112,9 +112,11 @@ final class CountryService
                 }
 
                 $average_rate = $average_rate / count($counties);
+                $average_total_amount = $total_amount / count($counties);
 
                 $tax_data_state->setAverageRate($average_rate);
                 $tax_data_state->setTotalAmount($total_amount);
+                $tax_data_state->setAverageTotalAmount($average_total_amount);
                 $this->em->merge($tax_data_state);
                 $this->em->flush();
 
@@ -126,8 +128,11 @@ final class CountryService
             }
 
             $average_rate_country = $average_rate_country / count($states);
+            $average_total_amount_country = $total_amount_country / count($states);
+
             $tax_data_country->setAverageRate($average_rate_country);
             $tax_data_country->setTotalAmount($total_amount_country);
+            $tax_data_country->setAverageTotalAmount($average_total_amount_country);
             $this->em->merge($tax_data_country);
             $this->em->flush();
         }
