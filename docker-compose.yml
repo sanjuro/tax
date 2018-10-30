@@ -1,0 +1,40 @@
+traefik:
+  image: traefik:1.7
+  command: --docker --docker.exposedbydefault=false
+  ports:
+    - "80:80"
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+
+app:
+  image: thecodingmachine/php:7.2-v1-apache-node10
+  labels:
+    - traefik.enable=true
+    - traefik.backend=app
+    - traefik.frontend.rule=Host:taxman.local
+  environment:
+    APACHE_DOCUMENT_ROOT: public/
+    PHP_EXTENSION_XDEBUG: 1
+    PHP_MEMORY_LIMIT: 1G
+    APP_ENV: dev
+    APP_SECRET: 8d2a5c935d8ef1c0e2b751147382bc75
+    DATABASE_URL: mysql://root:pass@tax_db_1:3306/taxman
+    STARTUP_COMMAND_1: composer install && bin/console doctrine:migrations:migrate --no-interaction && bin/console doctrine:fixtures:load --no-interaction
+    STARTUP_COMMAND_2: yarn install && yarn watch &
+  volumes:
+    - ./app:/var/www/html
+  links:
+    - db
+
+db:
+  image: mysql:5.7
+  environment:
+    MYSQL_ROOT_PASSWORD: pass
+    MYSQL_DATABASE: taxman
+    MYSQL_USER: taxman_user
+    MYSQL_PASSWORD: 123
+  ports:
+      - "3306:3306"
+  volumes:
+    - ./docker/mysql-data:/var/lib/mysql
+    - ./docker/Mysql/utf8mb4.cnf:/etc/mysql/conf.d/utf8mb4.cnf:ro

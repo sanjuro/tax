@@ -1,0 +1,25 @@
+/.buildpath
+/.cache
+/.metadata
+/.project
+/.settings
+atlassian*
+/nbproject
+/sitemap
+/sitemap.xml
+/.idea
+/.gitattributes
+/node_modules
+/.grunt
+.gitmodules
+.commands
+
+/var/*
+!/var/.htaccess
+/vendor/*
+!/vendor/.htaccess
+
+# Docker
+docker/mysql-data
+docker/Mysql/conf/init.sql
+.DS_Store
