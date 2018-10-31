@@ -68,10 +68,12 @@ Once docker has been installed and ready to use, you will need to setup a machin
 docker-machine create -d virtualbox -virtualbox-memory "4096" -virtualbox-disk-size "30000" tax
 ```
 
+1. git clone this repo -> git@github.com:sanjuro/tax.git
+
 ```bash
 docker-machine-nfs tax \
     --mount-opts="noacl,async,nolock,vers=3,udp,noatime,actimeo=2" \
-    --shared-folder="/Users/user/Development/Sourcecode/tax" \
+    --shared-folder="{path_to_folder}/tax" \
     --nfs-config="-alldirs -maproot=0"
 ```
 
@@ -88,7 +90,7 @@ eval $(docker-machine env tax)
 
 ### 2. Get the Code and Docker Build
 
-1. git clone this repo -> git@github.com:meticulosity/taxman.git code
+1. Make sure you have the code in \tax folder
 2. go into the source folder and run
 ```
 docker-compose up --build
