@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\State;
+use App\Entity\TaxDAta;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -21,46 +21,52 @@ final class StateFixtures extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager): void
     {
-        $stateEntity = new State();
+
+        $stateEntity = new TaxData();
         $stateEntity->setTitle('Western Cape');
         $stateEntity->setShortCode('ZAF-WC');
-        $stateEntity->setCountry($this->getReference(CountryFixtures::COUNTRY_ZA_REFERENCE));
+        $stateEntity->setEntityType('state');
+        $stateEntity->setParent($this->getReference(TaxdataFixtures::COUNTRY_ZA_REFERENCE));
         $manager->persist($stateEntity);
         $manager->flush();
 
         $this->addReference(self::STATE_WC_REFERENCE, $stateEntity);
 
-        $stateEntity = new State();
+        $stateEntity = new TaxData();
         $stateEntity->setTitle('Eastern Cape');
         $stateEntity->setShortCode('ZAF-EC');
-        $stateEntity->setCountry($this->getReference(CountryFixtures::COUNTRY_ZA_REFERENCE));
+        $stateEntity->setEntityType('state');
+        $stateEntity->setParent($this->getReference(TaxdataFixtures::COUNTRY_ZA_REFERENCE));
         $manager->persist($stateEntity);
         $manager->flush();
 
         $this->addReference(self::STATE_EC_REFERENCE, $stateEntity);
 
-        $stateEntity = new State();
+        $stateEntity = new TaxData();
         $stateEntity->setTitle('Kwazulu Natal');
         $stateEntity->setShortCode('ZAF-KZN');
-        $stateEntity->setCountry($this->getReference(CountryFixtures::COUNTRY_ZA_REFERENCE));
+        $stateEntity->setEntityType('state');
+        $stateEntity->setParent($this->getReference(TaxdataFixtures::COUNTRY_ZA_REFERENCE));
         $manager->persist($stateEntity);
         $manager->flush();
 
         $this->addReference(self::STATE_KZN_REFERENCE, $stateEntity);
 
-        $stateEntity = new State();
+        $stateEntity = new TaxData();
         $stateEntity->setTitle('Gauteng');
         $stateEntity->setShortCode('ZAF-GAU');
-        $stateEntity->setCountry($this->getReference(CountryFixtures::COUNTRY_ZA_REFERENCE));
+        $stateEntity->setEntityType('state');
+        $stateEntity->setParent($this->getReference(TaxdataFixtures::COUNTRY_ZA_REFERENCE));
         $manager->persist($stateEntity);
         $manager->flush();
 
         $this->addReference(self::STATE_GA_REFERENCE, $stateEntity);
 
-        $stateEntity = new State();
+        $stateEntity = new TaxData();
         $stateEntity->setTitle('North West');
         $stateEntity->setShortCode('ZAF-NWT');
-        $stateEntity->setCountry($this->getReference(CountryFixtures::COUNTRY_ZA_REFERENCE));
+        $stateEntity->setEntityType('state');
+        $stateEntity->setParent($this->getReference(TaxdataFixtures::COUNTRY_ZA_REFERENCE));
         $manager->persist($stateEntity);
         $manager->flush();
 
@@ -70,7 +76,7 @@ final class StateFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            CountryFixtures::class,
+            TaxDataFixtures::class,
         ];
     }
 }

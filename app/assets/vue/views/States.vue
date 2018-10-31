@@ -35,6 +35,9 @@
                     <th>
                       Total Tax Collected
                     </th>
+                    <th>
+                      Average County Total Tax
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -43,13 +46,16 @@
                         {{state.title}}
                       </td>
                       <td>
-                        {{state.short_code}}
+                        {{state.shortCode}}
                       </td>
                       <td>
-                        {{state.average_rate}}
+                        {{ formatMoney(state.averageRate) }}
                       </td>
                       <td>
-                        {{state.total_amount}}
+                        {{ formatMoney(state.totalAmount) }}
+                      </td>
+                      <td>
+                        {{ formatMoney(state.averageTotalAmount) }}
                       </td>
                   </tr>
                 </tbody>
@@ -98,6 +104,10 @@
             createState () {
                 this.$store.dispatch('state/createState', this.$data.message)
                     .then(() => this.$data.message = '')
+            },
+            formatMoney(value) {
+                let val = (value/1).toFixed(2).replace(',', '.')
+                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             },
         },
     }

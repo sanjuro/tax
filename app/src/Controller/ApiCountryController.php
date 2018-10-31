@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\CountryService;
+use App\Service\TaxDataService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,18 +14,18 @@ final class ApiCountryController extends Controller
     /** @var SerializerInterface */
     private $serializer;
 
-    /** @var CountryService */
-    private $countryService;
+    /** @var TaxDataService */
+    private $taxDataService;
 
     /**
-     * ApiCountryController constructor.
+     * ApiTaxDataController constructor.
      * @param SerializerInterface $serializer
-     * @param CountryService $countryService
+     * @param TaxDataService $taxDataService
      */
-    public function __construct(SerializerInterface $serializer, CountryService $countryService)
+    public function __construct(SerializerInterface $serializer, TaxDataService $taxDataService)
     {
         $this->serializer = $serializer;
-        $this->countryService = $countryService;
+        $this->taxDataService = $taxDataService;
     }
 
     /**
@@ -34,9 +34,9 @@ final class ApiCountryController extends Controller
      */
     public function listAction(): JsonResponse
     {   
-        $this->countryService->updateTax();
-        $countryEntities = $this->countryService->getAllWithTaxData();
-        $data = $this->serializer->serialize($countryEntities, 'json');
+        $this->taxDataService->updateTax();
+        $taxDataEntities = $this->taxDataService->getAllByType('country');
+        $data = $this->serializer->serialize($taxDataEntities, 'json');
 
         return new JsonResponse($data, 200, [], true);
     }
@@ -47,23 +47,10 @@ final class ApiCountryController extends Controller
      */
     public function getAction(int $id): JsonResponse
     {
-        $countryEntity = $this->countryService->getOne($id);
-        $data = $this->serializer->serialize($countryEntity, 'json');
+        $taxDataEntity = $this->taxDataService->getOne($id);
+        $data = $this->serializer->serialize($taxDataEntity, 'json');
 
         return new JsonResponse($data, 200, [], true);
     }
 
-    /**
-     * @Rest\Post("/api/country/create", name="createCountry")
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function createAction(Request $request): JsonResponse
-    {
-        $message = $request->request->get('title');
-        $countryEntity = $this->countryService->create($title);
-        $data = $this->serializer->serialize($countryEntity, 'json');
-
-        return new JsonResponse($data, 200, [], true);
-    }
 }

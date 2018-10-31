@@ -43,13 +43,13 @@
                     {{country.title}}
                   </td>
                   <td>
-                    {{country.short_code}}
+                    {{country.shortCode}}
                   </td>
                   <td>
-                    {{country.average_rate}}
+                    {{ formatMoney(country.averageRate) }}
                   </td>
                   <td>
-                    {{country.total_amount}}
+                    {{ formatMoney(country.totalAmount) }}
                   </td>
               </tr>
 
@@ -95,9 +95,9 @@
             },
         },
         methods: {
-            createCountry () {
-                this.$store.dispatch('country/createCountry', this.$data.message)
-                    .then(() => this.$data.message = '')
+            formatMoney(value) {
+                let val = (value/1).toFixed(2).replace(',', '.')
+                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             },
         },
     }

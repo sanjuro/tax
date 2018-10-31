@@ -3,14 +3,18 @@
 namespace App\Entity;
 
 use Carbon\Carbon;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="tax_data")
  * @ORM\HasLifecycleCallbacks
  */
-final class TaxData
+class TaxData
 {
     /**
      * @var int
@@ -19,6 +23,29 @@ final class TaxData
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="TaxData", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
+     */
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TaxData", mappedBy="parent")
+     */
+    private $children;
+
+    /**
+     * @var string
+     * @ORM\Column(name="title", type="string")
+     */
+    private $title;
+
+    /**
+     * @var string
+     * @ORM\Column(name="short_code", type="string")
+     */
+    private $short_code;
 
     /**
      * @var decimal
@@ -45,12 +72,6 @@ final class TaxData
     private $period;
 
     /**
-     * @var int
-     * @ORM\Column(name="entity_id", type="integer")
-     */
-    private $entity_id;
-
-    /**
      * @var string
      * @ORM\Column(name="entity_type", type="string")
      */
@@ -74,7 +95,8 @@ final class TaxData
      */
     public function onPrePersist(): void
     {
-        $this->created = Carbon::now();
+        $this->average_total_amount = 0.00;
+        $this->created_at = Carbon::now();
     }
 
     /**
@@ -83,7 +105,12 @@ final class TaxData
      */
     public function onPreUpdate(): void
     {
-        $this->updated = Carbon::now();
+        $this->updated_at = Carbon::now();
+    }
+
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -92,6 +119,57 @@ final class TaxData
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @param TaxData $parent
+     * @return void
+     */
+    public function setParent(TaxData $parent): void
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @return TaxData []
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return void
+     */
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortCode(): string
+    {
+        return $this->short_code;
+    }
+
+    /**
+     * @param string $short_code
+     * @return void
+     */
+    public function setShortCode(string $short_code): void
+    {
+        $this->short_code = $short_code;
     }
 
     /**
@@ -143,23 +221,6 @@ final class TaxData
     public function setAverageRate(float $average_rate): void
     {
         $this->average_rate = $average_rate;
-    }
-
-    /**
-     * @return int
-     */
-    public function getEntityId(): int
-    {
-        return $this->entity_id;
-    }
-
-    /**
-     * @param int $entity_id
-     * @return void
-     */
-    public function setEntityId(int $entity_id): void
-    {
-        $this->entity_id = $entity_id;
     }
 
     /**
