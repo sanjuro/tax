@@ -13,6 +13,49 @@
 * Symfony4
 * Vue.js
 
+## Task
+
+Develop a software that can be used to calculate statistics about the tax income of a country. The country is organized in 5 states and theses states are devided into counties.
+
+Each county has a different tax rate and collects a different amount of taxes.
+
+The software should have the following features:
+
+- Output the overall amount of taxes collected per state
+- Output the average amount of taxes collected per state
+- Output the average county tax rate per state
+- Output the average tax rate of the country 
+- Output the collected overall taxes of the country
+
+
+## Assumptions
+
+I have assumptions while creating this application:
+
+1. There is a parent - child hierachry for Country - State - County
+2. I have not assumed a currency on monetar values
+3. As there is no input mechanism for Tax Data all data is run in via Doctrine Fixtures
+
+
+## Notes
+
+All tax related calculations are run via a function, updateTax in the class App\Service\TaxDataService, it flows as follows:
+
+For every country, we get all states.
+For all states, it gets all counties.
+Next for each county the system calculates the Total Tax collected, Average Tax rate and Average Tax Collected.
+This data is then persisted on a county level
+All tax data for counties is then propogated for their parent state.
+This data is then persisted on a state level
+All tax data for counties is then propogated for their country state.
+This data is then persisted on a country level
+
+This function should be run via a cron but for the scope of this project I have set it to run on calls of the listAction on App\Controller\ApiCountryController and App\Controller\ApiStateController.
+
+The task did not request a feature where a user could capture and edit tax data on a county leavel, all tax daat is loaded in via fixtures
+
+I have not added Unit Tests to the project due to time constraints
+
 ### 1. Setup ( create virtual box )
 
 Before doing anything you will need to install **docker** & **docker-compose** on your host system.
